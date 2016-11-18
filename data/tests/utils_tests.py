@@ -1,5 +1,5 @@
 """
-Utilities Tests
+# TODO: module docstrings
 """
 import io
 import os
@@ -13,7 +13,39 @@ from data.utils import send_email
 from data.objects import BasicAuth
 
 
-class SendEmailMockResponse:
+class MockSMTP:
+    """The MockSMTP class replaces the SMTP object in the sendmail function.
+
+    This class takes all the methods used in the sendemail function and
+    replaces them with attributes/methods that return True.
+
+    Attributes:
+        id (hex): A hex object for reference.
+
+    """
+
+    def __init__(self, identity=hex(id('Testing'))):
+
+        self.id = identity
+
+        for item in ('ehlo','starttls','login','sendmail','close'):
+            self.__dict__[item] = True
+
+
+class MockEmail:
+    """The MockEmail class builds a mock email message.
+    
+    This class builds an email message used to test various
+    components of the email message. 
+
+    Attributes:
+        email (str): email 
+        package (dict): package containing email fields
+        message (MIMEText): MIMEText wrapped string 
+        file_path (dict): dictionary containing mock file and path
+        attachment (MIMEApplication): MIMEApplication wrapped IO object
+
+    """
 
     def __init__(self, package, message=None, file_path=None):
         
@@ -91,19 +123,27 @@ class SendEmailTests(unittest.TestCase):
         package['from'] = ''
         self.assertRaises(AssertionError, send_email, package, self.test_message)
 
-    
+
     def test_email_construction_with_message(self):
         package = self.test_package.copy()
-        check_response = SendEmailMockResponse(package, self.test_message)
-        compiled = send_email(package, message=self.test_message, file_path=None, send=False)
-        self.assertEqual(type(check_response.email),type(compiled))
+        message = self.test_message
+        check_response = MockEmail(package, message=message)
+        self.assertIsNot(check_response.message, None)
 
-    
+
     def test_email_construction_with_attachment(self):
         package = self.test_package.copy()
         file_dict = {'file':self.test_message, 'file_path':self.test_file_path}
-        check_response = SendEmailMockResponse(package, file_path=file_dict)
+        check_response = MockEmail(package, file_path=file_dict)
         self.assertFalse(not check_response.email.get_payload())
+
+
+    @patch('data.utils.SMTP')
+    def test_send_email(self, mocked_smtp):
+        mocked_smtp = MockSMTP()
+        package = self.test_package.copy()
+        test = send_email(package, message=self.test_message, file_path=None)
+        self.assertEqual(True, test)
 
         
 if __name__ == '__main__':

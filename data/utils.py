@@ -1,5 +1,5 @@
 """
-Utilities commonly used to transfer data.
+# TODO: module docstrings
 """
 import os
 
@@ -9,27 +9,37 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 
-def send_email(package, message=None, file_path=None, send=True):
-    """A function that makes sending emails with attachments 
-    repeatable and easier.
-    
-    :params package: dict, containing fields
-    :params message: str, optional message to include in email
-    :params file_path: str, absolute filepath
-    :params send: bool, safety mechanism
-    
-    package is a dict object with the following fields:
-        from :: str, superficial sender
-        to :: str, superficial recipient
-        subject :: email subject
-        sender :: str, email of sender
-        recipients :: str or list, the emails of the recipients
+def send_email(package, message=None, file_path=None, host=None, port=None):
+    """ Simple message, attachment or message + attachment sending from 
+    an SMTP server.
+
+    Args:
+        param1 (dict): package, dictionary containing fields
+        param2 (str): message, optional message to include in email
+        param3 (str): file_path,  absolute filepath to attachment
+        param4 (str): host, host of email server
+        param5 (int): port, port of email server
+
+        
+    Returns:
+        bool: The return value. True for success, False otherwise.
+
+
+    Example package parameter:
+        {'from': 'engineering team',
+         'to': 'management team',
+         'subject': 'engineering value at all time high',
+         'sender': 'noblemen@engineering',
+         'recipients': ['jester1@management',
+                        'jester1@management']}
+
     """
+    success = True
     keys = set(package.keys()) 
     check = set(['from','to','subject','sender','recipients'])
 
     if keys != check:
-        raise ValueError("You're passing incorrect fields.")
+        raise ValueError("Make sure you have the correct fields.")
     assert(all(package.values()) == True)
 
     msg = MIMEMultipart()
@@ -51,18 +61,19 @@ def send_email(package, message=None, file_path=None, send=True):
                 Content_Disposition='attachment;filename="{}"'.format(os.path.basename(file_path)),
                 Name=os.path.basename(file_path)
             ))
-
-    if send:
-        # read more @ https://docs.python.org/3.5/library/smtplib.html 
-        # cannot use a context manager here since it requires python 3.3
-        server = SMTP("smtp.gmail.com", 587)
-        server.ehlo() 
-        server.starttls() 
+    
+    try:
+        server = SMTP(host, port)
+        server.ehlo()
+        server.starttls()
         server.login(auth.user, auth.password)
         server.sendmail(package['sender'], package['recipients'], msg.as_string())
         server.close()
-    else:
-        return msg
+    except Exception as error:
+        print(error[1])
+        success = False
+
+    return success
 
 
 
