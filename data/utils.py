@@ -70,7 +70,7 @@ def send_email(package, message=None, file_path=None, host=None, port=None):
         server.sendmail(package['sender'], package['recipients'], msg.as_string())
         server.close()
     except Exception as error:
-        print(error[1])
+        print('Error: '+error[1])
         success = False
 
     return success
