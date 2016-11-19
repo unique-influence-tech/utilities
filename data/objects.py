@@ -1,15 +1,10 @@
 """
-Classes used throughout data package.
+# TODO: module docstrings
 """
 
 class BasicAuth:
-    """ The '<BasicAuth Object>' is an object that contains
-    user and password properties. The idea is that this object can
-    be imported into a variety of modules and they will share 
-    the same credentials. It acts global without being global.
-
-    :params user: str, user identifier
-    :params password: str, password
+    """ 
+    # TODO: class docstrings
     """
     _shared = {}
 

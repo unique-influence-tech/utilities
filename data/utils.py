@@ -13,6 +13,7 @@ def send_email(package, message=None, file_path=None, host=None, port=None):
     """ Simple message, attachment or message + attachment sending from 
     an SMTP server.
 
+
     Args:
         param1 (dict): package, dictionary containing fields
         param2 (str): message, optional message to include in email
@@ -26,12 +27,11 @@ def send_email(package, message=None, file_path=None, host=None, port=None):
 
 
     Example package parameter:
-        {'from': 'engineering team',
-         'to': 'management team',
-         'subject': 'engineering value at all time high',
-         'sender': 'noblemen@engineering',
-         'recipients': ['jester1@management',
-                        'jester1@management']}
+        {'from': 'Engineering,
+         'to': 'Management',
+         'subject': 'System Uptime',
+         'sender': 'engineering@company.com',
+         'recipients': ['manager1@company.com','manager2@company.com']}
 
     """
     success = True
