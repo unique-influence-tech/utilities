@@ -3,7 +3,7 @@
 """
 from .objects import BasicAuth
 
-auth = BasicAuth() #must instantiate auth object before utilities
+auth = BasicAuth() # authentication object shared across module
 
 from .utils import send_email
 
