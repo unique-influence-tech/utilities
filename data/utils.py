@@ -1,5 +1,21 @@
-"""
-# TODO: module docstrings
+"""A set of utility functions written in Python.
+
+This module doesn't really have a proper home yet, but my intention is for it to be 
+a set of tools more people use in the future.
+
+Example:
+    
+     >> import utils
+     >> utils.send_email()
+     >> exit()
+
+Attributes:
+
+    Coming Soon
+
+Todo:
+
+    Coming Soon
 """
 import os
 
@@ -12,7 +28,6 @@ from email.mime.application import MIMEApplication
 def send_email(package, message=None, file_path=None, host=None, port=None):
     """ Simple message, attachment or message + attachment sending from 
     an SMTP server.
-
 
     Args:
         param1 (dict): package, dictionary containing fields

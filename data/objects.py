@@ -3,9 +3,7 @@
 """
 
 class BasicAuth:
-    """ 
-    # TODO: class docstrings
-    """
+    """Borg patterned authentication"""
     _shared = {}
 
     def __init__(self, user=None, password=None):
@@ -33,3 +31,17 @@ class BasicAuth:
         if self._user and self._password:
             return '<BasicAuth Object [Signed]>'
         return '<BasicAuth Object [Unsigned]>'
+
+
+class DateRangeTuple(tuple):
+    """Modified tuple class to 
+    hold start and end dates.
+    """
+    @property
+    def start(self):
+        return self[0]
+
+    @property
+    def end(self):
+        return self[1]
+
