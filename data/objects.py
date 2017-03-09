@@ -1,5 +1,11 @@
-"""
-# TODO: module docstrings
+"""A set of objects used through the utilities 
+
+This module doesn't really have a proper home yet, 
+but my intention is for it to be a set of tools more 
+people use in the future.
+
+Todo:
+    More objects!
 """
 
 class BasicAuth:
